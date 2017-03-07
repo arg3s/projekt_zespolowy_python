@@ -4,6 +4,8 @@ import re
 from nltk.corpus import stopwords, reuters
 from sklearn.feature_extraction.text import TfidfVectorizer
 cachedStopWords = stopwords.words("english")
+import matplotlib.pyplot as plt
+## odwolujac sie do bib uzywamy plt.funkcja
 
 def tokenize(text):
     min_length = 3
@@ -40,4 +42,6 @@ def main():
     for doc in test_docs:
         print(feature_values(doc, representer))
 
+
+##
 main()
