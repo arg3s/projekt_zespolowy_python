@@ -1,3 +1,8 @@
 google
 pang sentiment sets
 https://www.cs.cornell.edu/people/pabo/movie-review-data/
+
+zbudowanie slownika wszystkich slow, zobaczyc jak dlugi ma byc wektor
+dla kazdego dokumentu tworzenie wektora
+na podstawie kazdego wektora tworzenie klasy
+klasyfikacja klas czy cos
