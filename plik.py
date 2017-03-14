@@ -41,5 +41,3 @@ def main():
     representer = tf_idf(train_docs)
     for doc in test_docs:
         print(feature_values(doc, representer))
-
-main()
