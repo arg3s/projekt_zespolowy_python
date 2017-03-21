@@ -2,6 +2,12 @@ from os import listdir
 from plik import tf_idf
 from plik import feature_values
 from sklearn import svm
+from nltk.stem.porter import PorterStemmer
+from nltk.corpus import stopwords
+import re
+cachedStopWords = stopwords.words("english")
+min_length = 4
+import matplotlib as math
 
 class Corpus:
     def __init__(self, dir_pos, dir_neg):
@@ -67,7 +73,7 @@ class Corpus:
                     self.vocabulary[i] = word
                     self.inverse_vocabulary[word] = i
 
-    def get_svm_vectors(self, train = 0, test = 0):
+    def get_svm_vectors(self, train=0, test=0):
         Xs = []
         Ys = []
         for doc in self.documents:
@@ -81,6 +87,7 @@ class Corpus:
             Ys.append(y)
         return (Xs, Ys)
 
+
 class Document:
     def __init__(self, text, positive=1, train=1):
         self.positive = positive
@@ -90,21 +97,62 @@ class Document:
     def get_feature_values(self, representer):
         return feature_values(self.text, representer)
 
+    def preprocessing(self, raw_tokens):
+        no_stopwords = [token for token in raw_tokens if token not in cachedStopWords]
+        stemmed_tokens = []
+        stemmer = PorterStemmer()
+
+        for token in no_stopwords:
+            stemmed_tokens.append(stemmer.stem(token))
+        #   uzycie stemmera
+
+        p = re.compile('[a-zA-Z]+')
+        pattern_checked = []
+
+        for stem in stemmed_tokens:
+            if p.match(stem) and len(stem) >= min_length:
+                pattern_checked.append(stem)
+        return pattern_checked
+
     def get_unique_words(self):
         word_list = []
-        for word in self.text.split():
-            if not word in word_list:
+        for word in self.preprocessing(self.text.split()):
+            if word not in word_list:
                 word_list.append(word)
         return word_list
 
     def get_vector(self, inverse_vocabulary):
         lng = len(inverse_vocabulary)
         vector = [0 for i in range(lng)]
-        for word in self.text.split():
+        for word in self.preprocessing(self.text.split()):
             vector[inverse_vocabulary[word]] = 1
         return vector
 
 
+class tf_idf:
+    def __init__(self):
+        df = {}
+        D = 0.0
+
+    def add_document(self, document):
+        self.D += 1.0
+        for token in set(document):
+            self.df[token] += 1.0
+
+    def idf(self, token):
+        return math.log(self.D/self.df[token])
+
+    def tf(self, token, document):
+        liczba_wystapien_tokenu = 0.0
+        liczba_tokenow = 0.0
+        for t in document:
+            liczba_tokenow += 1.0
+            if t == token:
+                liczba_wystapien_tokenu += 1.0
+        return liczba_wystapien_tokenu/liczba_tokenow
+
+    def tfidf(self, token, document):
+        return self.tf(token, document)*self.idf(token)
 
 crp = Corpus("C:\\Users\\s0152868\\Desktop\\txt_sentoken\\pos", "C:\\Users\\s0152868\\Desktop\\txt_sentoken\\neg")
 crp.get_train_documents()

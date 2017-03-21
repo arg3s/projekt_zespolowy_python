@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 from sklearn import svm
 
+
 def load_data(filename):
     matrix = []
     for line in open(filename):
