@@ -5,9 +5,10 @@ from sklearn import svm
 from nltk.stem.porter import PorterStemmer
 from nltk.corpus import stopwords
 import re
+import matplotlib as math
 cachedStopWords = stopwords.words("english")
 min_length = 4
-import matplotlib as math
+
 
 class Corpus:
     def __init__(self, dir_pos, dir_neg):
@@ -101,11 +102,8 @@ class Document:
         no_stopwords = [token for token in raw_tokens if token not in cachedStopWords]
         stemmed_tokens = []
         stemmer = PorterStemmer()
-
         for token in no_stopwords:
             stemmed_tokens.append(stemmer.stem(token))
-        #   uzycie stemmera
-
         p = re.compile('[a-zA-Z]+')
         pattern_checked = []
 
@@ -157,7 +155,7 @@ class tf_idf:
 crp = Corpus("C:\\Users\\s0152868\\Desktop\\txt_sentoken\\pos", "C:\\Users\\s0152868\\Desktop\\txt_sentoken\\neg")
 crp.get_train_documents()
 crp.initialize_vocabulary()
-print(crp.vocabulary)
+# print(crp.vocabulary)
 
 klasyfikator = svm.SVC(kernel="linear")  # svm.SVC(kernel = "linear")
 (X, y) = crp.get_svm_vectors(train=1)
