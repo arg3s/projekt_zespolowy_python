@@ -6,6 +6,7 @@ from nltk.stem.porter import PorterStemmer
 from nltk.corpus import stopwords
 import re
 import matplotlib as math
+
 cachedStopWords = stopwords.words("english")
 min_length = 4
 
@@ -60,14 +61,14 @@ class Corpus:
                 train.append(doc.text)
         return train
 
-#    def get_representer(self):
-#       return tf_idf(self.get_train_documents())
+    #    def get_representer(self):
+    #       return tf_idf(self.get_train_documents())
 
     def initialize_vocabulary(self):
         self.vocabulary = {}
         self.inverse_vocabulary = {}
         for i, doc in enumerate(self.documents):
-            if i%1000 == 0:
+            if i % 1000 == 0:
                 print(i)
             for word in doc.get_unique_words():
                 if word not in self.vocabulary:
@@ -138,7 +139,7 @@ class tf_idf:
             self.df[token] += 1.0
 
     def idf(self, token):
-        return math.log(self.D/self.df[token])
+        return math.log(self.D / self.df[token])
 
     def tf(self, token, document):
         liczba_wystapien_tokenu = 0.0
@@ -147,10 +148,11 @@ class tf_idf:
             liczba_tokenow += 1.0
             if t == token:
                 liczba_wystapien_tokenu += 1.0
-        return liczba_wystapien_tokenu/liczba_tokenow
+        return liczba_wystapien_tokenu / liczba_tokenow
 
     def tfidf(self, token, document):
-        return self.tf(token, document)*self.idf(token)
+        return self.tf(token, document) * self.idf(token)
+
 
 crp = Corpus("C:\\Users\\s0152868\\Desktop\\txt_sentoken\\pos", "C:\\Users\\s0152868\\Desktop\\txt_sentoken\\neg")
 crp.get_train_documents()

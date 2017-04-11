@@ -17,7 +17,7 @@ def draw_data(matrix):
     ys0 = []
     xsn = []
     ysn = []
-    for[x, y, c] in matrix:
+    for [x, y, c] in matrix:
         if c == 1:
             xs1.append(x)
             ys1.append(y)
@@ -32,12 +32,12 @@ def draw_data(matrix):
     plt.plot(xs1, ys1, 'ro', color='blue')
     plt.plot(xsn, ysn, 'ro', color='yellow')
     plt.show()
-    
+
 
 def classify(matrix):
     xs = []
     ys = []
-    for[x, y, c] in matrix:
+    for [x, y, c] in matrix:
         if c == 1 or c == 0:
             xs.append([x, y])
             ys.append(c)
@@ -47,6 +47,8 @@ def classify(matrix):
         if matrix[i][2] == -1:
             matrix[i][2] = classifier.predict([matrix[i][0], matrix[i][1]])
     return matrix
+
+
 matrix = load_data('train')
 draw_data(matrix)
 draw_data(classify(matrix))
